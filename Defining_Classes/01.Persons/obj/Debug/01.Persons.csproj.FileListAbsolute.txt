@@ -1,0 +1,10 @@
+D:\Download\SoftwareUniversity\Fundamental\OOP\01.Persons\01.Persons\bin\Debug\01.Persons.exe
+D:\Download\SoftwareUniversity\Fundamental\OOP\01.Persons\01.Persons\bin\Debug\01.Persons.pdb
+D:\Download\SoftwareUniversity\Fundamental\OOP\01.Persons\01.Persons\obj\Debug\01.Persons.csprojResolveAssemblyReference.cache
+D:\Download\SoftwareUniversity\Fundamental\OOP\01.Persons\01.Persons\obj\Debug\01.Persons.exe
+D:\Download\SoftwareUniversity\Fundamental\OOP\01.Persons\01.Persons\obj\Debug\01.Persons.pdb
+D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\obj\Debug\01.Persons.exe
+D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\obj\Debug\01.Persons.pdb
+D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\bin\Debug\01.Persons.exe
+D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\bin\Debug\01.Persons.pdb
+D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\obj\Debug\01.Persons.csprojResolveAssemblyReference.cache
