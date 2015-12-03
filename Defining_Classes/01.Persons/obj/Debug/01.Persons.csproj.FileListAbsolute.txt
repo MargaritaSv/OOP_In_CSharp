@@ -8,3 +8,8 @@ D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\obj\D
 D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\bin\Debug\01.Persons.exe
 D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\bin\Debug\01.Persons.pdb
 D:\Download\SoftwareUniversity\Fundamental\OOP\Defining_Classes\01.Persons\obj\Debug\01.Persons.csprojResolveAssemblyReference.cache
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\01.Persons\obj\Debug\01.Persons.exe
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\01.Persons\obj\Debug\01.Persons.pdb
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\01.Persons\bin\Debug\01.Persons.exe
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\01.Persons\bin\Debug\01.Persons.pdb
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\01.Persons\obj\Debug\01.Persons.csprojResolveAssemblyReference.cache

@@ -1,0 +1,4 @@
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\Learning_System\bin\Debug\Learning_System.exe
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\Learning_System\bin\Debug\Learning_System.pdb
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\Learning_System\obj\Debug\Learning_System.exe
+C:\Users\Margarita\Desktop\OOP_In_CSharp.git\trunk\Defining_Classes\Learning_System\obj\Debug\Learning_System.pdb
