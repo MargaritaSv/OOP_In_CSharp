@@ -10,7 +10,7 @@ using System.Text;
 
 namespace ConsoleApplication2
 {
-    public class CommandExecutor:ICommandExecutor
+    public class CommandExecutor : ICommandExecutor
     {
         private IDatabase database;
         private IUser userINterfaces;
@@ -43,8 +43,7 @@ namespace ConsoleApplication2
                     break;
 
                 case "show-employees":
-                    //TODO: IMplement properly
-                    cmdResult = "Employees go here";
+                    cmdResult = ShowEmployee(cmd);
                     break;
                 case "end":
                     break;
@@ -54,7 +53,7 @@ namespace ConsoleApplication2
             return cmdResult;
         }
 
-        private string ExecutePaySalariesCMD(ICommand cmd) 
+        private string ShowEmployee(ICommand cmd)
         {
             string companyName = cmd.Parameters[0];
 
@@ -64,7 +63,54 @@ namespace ConsoleApplication2
             {
                 return string.Format($"Company {companyName} does not exist");
             }
-            
+
+            var output = new StringBuilder();
+
+            output.AppendLine(company.Name);
+            output.AppendFormat("{0} {1} {2:F2}", company.CEO.FirstName, company.CEO.LastName, this.database.TotalSalaries[company.CEO]).AppendLine();
+            this.database.TotalSalaries[company.CEO] = company.CEO.Salary;
+
+            decimal totalMaoney = company.CEO.Salary;
+
+
+            foreach (var em in company.Employee)
+            {
+                output.AppendFormat("{0} {1} {2:F2}", em.FirstName, em.LastName, this.database.TotalSalaries[em]).AppendLine();
+            }
+
+            foreach (var dep in company.Department)
+            {
+                DisplayDepartment(dep,output, 1);
+            }
+            output.AppendFormat("{0} {1:F2}", company.Name, totalMaoney).AppendLine();
+
+            return output.ToString();
+        }
+
+        private void DisplayDepartment(Deparment dep, StringBuilder output, int depLevel)
+        {
+            foreach (var em in dep.Employee)
+            {
+                output.AppendFormat("{0} {1} {2} {3:F2}",new string(' ',4*depLevel), em.FirstName, em.LastName, this.database.TotalSalaries[em]).AppendLine();
+            }
+
+            foreach (var subDep in dep.SubDepartments)
+            {
+                DisplayDepartment(subDep, output, depLevel=1);
+            }
+        }
+
+        private string ExecutePaySalariesCMD(ICommand cmd)
+        {
+            string companyName = cmd.Parameters[0];
+
+            var company = this.database.Comapanies.FirstOrDefault(c => c.Name == companyName);
+
+            if (company == null)
+            {
+                return string.Format($"Company {companyName} does not exist");
+            }
+
             var output = new StringBuilder();
 
             this.database.TotalSalaries[company.CEO] = company.CEO.Salary;
@@ -78,17 +124,19 @@ namespace ConsoleApplication2
                 totalMaoney += em.Salary;
             }
 
-            output.AppendFormat($"{company.Name} ####").AppendLine();
+            //  output.AppendFormat($"{company.Name} ####").AppendLine();
             foreach (var dep in company.Department)
             {
-               totalMaoney += PaySalariesInDepartment(dep,output);
+                totalMaoney += PaySalariesInDepartment(dep, output, 1);
             }
+            output.AppendFormat("{0} {1:F2}", company.Name, totalMaoney).AppendLine();
 
-            output.Replace("####", String.Format("{0:F2}",totalMaoney), 0, company.Name.Length+5);
-            return output.ToString();
+            //  output.Replace("####", String.Format("{0:F2}",totalMaoney), 0, company.Name.Length+5);
+            return string.Join(Environment.NewLine, output.ToString().Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).Reverse());
+            //so we take the output ,cut in new lines,reverse masive and write result we reverse in the new line
         }
 
-        private decimal PaySalariesInDepartment(Deparment department,StringBuilder output)
+        private decimal PaySalariesInDepartment(Deparment department, StringBuilder output, int departmentLevel)
         {
             decimal totalMoneyPerDepartmen = 0;
             foreach (var em in department.Employee)
@@ -99,10 +147,10 @@ namespace ConsoleApplication2
 
             foreach (var subDep in department.SubDeaprtments)
             {
-               totalMoneyPerDepartmen +=  PaySalariesInDepartment(subDep,output);
+                totalMoneyPerDepartmen += PaySalariesInDepartment(subDep, output, departmentLevel + 1);
             }
 
-            output.AppendFormat($"{department.Name} ({totalMoneyPerDepartmen})").AppendLine();
+            output.AppendFormat("{0}{1} ({2:F2})", new string(' ', 4 * departmentLevel), department.Name, totalMoneyPerDepartmen).AppendLine();
             return totalMoneyPerDepartmen;
         }
 
@@ -139,10 +187,10 @@ namespace ConsoleApplication2
             var employeeTypeName = cmd.Parameters[2];
             var employeeType = Assembly.GetExecutingAssembly().GetType("Interfaces.Interfaces" + employeeTypeName); //trqbva da dadem pulniq naespace (gledam CEO-to mi)
             var employee = Activator.CreateInstance(employeeType, args: new object[] { cmd.Parameters[0], cmd.Parameters[1] }) as IEmployee;  //instancirame go indirektno s klasa "Activator"
-                                                                                                                                                    //Activator - tursi nai-konkretniq ctor
+                                                                                                                                              //Activator - tursi nai-konkretniq ctor
 
             //TODO replace salary to be valid
-           
+
 
             /*   bez reflection
                         IPaidPerson person;
@@ -189,7 +237,7 @@ namespace ConsoleApplication2
 
             decimal salary = salaryManager.GetSalary(employee, company);
             employee.Salary = salary;
-           
+
             return null;
         }
 

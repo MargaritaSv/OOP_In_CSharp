@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace Interfaces
 {
     using Interfaces;
-    public class Deparment : ICompanyStructure 
+    public class Deparment : ICompanyStructure
     {
         private string name;
         private Manager manager;
 
-        public Deparment(string name,Manager manager)
+        public Deparment(string name, Manager manager)
         {
             this.Name = name;
             this.Manager = manager;
@@ -37,9 +37,9 @@ namespace Interfaces
             get { return this.manager; }
             set
             {
-                if (value==null)
+                if (value == null)
                 {
-                    throw new ArgumentException("manager","manager cannot be misinc");
+                    throw new ArgumentException("manager", "manager cannot be misinc");
                 }
                 this.manager = value;
             }
