@@ -69,7 +69,8 @@
     <Compile Include="PaidPerson.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegularEmployee.cs" />
+    <Compile Include="Regular.cs" />
+    <Compile Include="Salaries\SalaryManager.cs" />
     <Compile Include="Salaryman.cs" />
     <Compile Include="UserINterfaces\ConsoleUserInterfaces.cs" />
     <Compile Include="Interfaces\IReader.cs" />

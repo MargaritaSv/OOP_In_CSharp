@@ -6,7 +6,16 @@ using System.Threading.Tasks;
 
 namespace Interfaces
 {
-    class Accountant
+    public class Accountant : Employee
     {
+        public Accountant(string firstName, string lastName, Deparment department)
+            : base(firstName, lastName, department)
+        {
+        }
+
+        public Accountant(string firstName, string lastName)
+            : base(firstName, lastName)
+        {
+        }
     }
 }

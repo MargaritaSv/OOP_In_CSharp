@@ -12,8 +12,6 @@ namespace Interfaces
         private string name;
         private Manager manager;
 
-
-
         public Deparment(string name,Manager manager)
         {
             this.Name = name;

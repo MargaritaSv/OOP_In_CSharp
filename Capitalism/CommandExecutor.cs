@@ -5,17 +5,21 @@ using Interfaces.Interfaces;
 using System.Linq;
 using System;
 using System.Reflection;
+using ConsoleApplication2.Salaries;
 
 namespace ConsoleApplication2
 {
-    public class CommandExecutor
+    public class CommandExecutor:ICommandExecutor
     {
         private IDatabase database;
         private IUser userINterfaces;
+        private SalaryManager salaryManager;
+
 
         public CommandExecutor()
         {
             this.database = new Database();  //tyk 6te pazim dannite
+            this.salaryManager = new SalaryManager();
         }
 
         public string ExecuteCMD(ICommand cmd)
@@ -60,10 +64,12 @@ namespace ConsoleApplication2
             {
                 return string.Format($"Company {companyName} does not exist");
             }
+
             if (company.Employee.Any(e => e.FirstName == firstName && e.LastName == lastName))
             {
                 return string.Format($"Employee {firstName}{lastName} already exist in{company.Name} (no department)");
             }
+
             //       if (company.Department.SelectMany(e => e.Employee).Any(e => e.FirstName == firstName && e.LastName == lastName))
             //"selectMany" -kolekciq ot employee-ta t.e. kato select ,no vmesto kolekcii ot kolekcii,6te vurne samo edin spisuk ot employee-ta
             //any-vru6ta bylev resyzltat
@@ -74,13 +80,15 @@ namespace ConsoleApplication2
             {
                 return string.Format($"Employee {firstName}{lastName} already exist in {company.Name} (in department {firstFindEmployee.Department.Name})");
             }
+
             //reflection
             var employeeTypeName = cmd.Parameters[2];
-            var employeeType = Assembly.GetExecutingAssembly().GetType(employeeTypeName);
-            var employee = Activator.CreateInstance(employeeType, args: new object[] { cmd.Parameters[0], cmd.Parameters[1], 0, null }) as IEmployee;  //instancirame go indirektno s klasa "Activator"
-                                                                                                                                                       //as IPaidPerson nai-ob6tiq za vsi4ki
+            var employeeType = Assembly.GetExecutingAssembly().GetType("Interfaces.Interfaces" + employeeTypeName); //trqbva da dadem pulniq naespace (gledam CEO-to mi)
+            var employee = Activator.CreateInstance(employeeType, args: new object[] { cmd.Parameters[0], cmd.Parameters[1] }) as IEmployee;  //instancirame go indirektno s klasa "Activator"
+                                                                                                                                                    //Activator - tursi nai-konkretniq ctor
 
             //TODO replace salary to be valid
+           
 
             /*   bez reflection
                         IPaidPerson person;
@@ -104,23 +112,32 @@ namespace ConsoleApplication2
             if (cmd.Parameters.Count == 4)
             {
                 company.Employee.Add(employee);
+                company.CEO.SubEmployee.Add(employee);
             }
             else
             {
-                var department = company.Department.FirstOrDefault(d => d.Name == cmd.Parameters[4]);
-
-                if (department == null)
+                string departmentName = cmd.Parameters[4];
+                var department = company.Department.FirstOrDefault(d => d.Name == departmentName);
+                if (department == null)//ako nqame department se opitvame da go vzemem kato poddep. na nqkoi dryg
                 {
-                    return string.Format($" Department {cmd.Parameters[4]} does not exist in company {company.Name}");
-
+                    department = company.Department.SelectMany(d => d.SubDepartment).FirstOrDefault(x => x.Name == departmentName);
 
                 }
-                department.Employee.Add(employee);
-                employee.Department = department;
+                if (department == null)//ako produljava da hvurlq null -> excetion
+                {
+                    return string.Format($"Department {cmd.Parameters[4]} does not exist in company {company.Name}");
+                }
+
+                department.Employee.Add(employee);  //dobavqme
+                department.Manager.SubEmployee.Add(employee); //no v drygiq sly4ai nqma direktno manager
+                employee.Department = department;  //op set-me
             }
+
+            decimal salary = salaryManager.GetSalary(employee, company);
+            employee.Salary = salary;
+
             return null;
         }
-
 
         private string ExecuteCreateCompany(ICommand cmd)
         {

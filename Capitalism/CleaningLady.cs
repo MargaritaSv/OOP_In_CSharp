@@ -8,12 +8,17 @@ namespace Interfaces
 {
     public class CleaningLady : Employee
     {
-        public CleaningLady(string firsdtname, string lastName, decimal salary)
-            : base(firsdtname, lastName, salary)
+        public CleaningLady(string firsdtname, string lastName, Deparment department)
+            : base(firsdtname, lastName,department)
         {
         }
 
-        protected override double SalaryFactor
+        public CleaningLady(string firsdtname, string lastName)
+            : base(firsdtname, lastName)
+        {
+        }
+
+        public override double SalaryFactor
         {
             get
             {

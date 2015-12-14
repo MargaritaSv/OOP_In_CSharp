@@ -10,25 +10,26 @@ namespace Interfaces
     public class Employee : PaidPerson, IEmployee
     {
 
-        public Employee(string firsdtname, string lastName, decimal salary, Deparment department)
-            : base(firsdtname, lastName, salary)
+        public Employee(string firsdtname, string lastName, Deparment department)
+            : base(firsdtname, lastName)
         {
             this.Department = department;
         }
 
-        public Employee(string firsdtname, string lastName, decimal salary)
-            : this(firsdtname, lastName, salary, null)
+        public Employee(string firsdtname, string lastName)
+            : this(firsdtname, lastName,null)
         {
         }
 
-        protected virtual double SalaryFactor
+        public virtual double SalaryFactor
         {
             get
             {
-                return 1; //default=1;
+                return 1;
             }
         }
 
         public Deparment Department { get; set; }
+
     }
 }

@@ -8,13 +8,17 @@ namespace Interfaces
 {
     public class ChiefTelephone : Employee
     {
-
-        public ChiefTelephone(string firsdtname, string lastName, decimal salary)
-            : base(firsdtname, lastName, salary)
+        public ChiefTelephone(string firsdtname, string lastName, Deparment department)
+            : base(firsdtname, lastName,department)
         {
         }
 
-        protected override double SalaryFactor
+        public ChiefTelephone(string firsdtname, string lastName)
+            : base(firsdtname, lastName)
+        {
+        }
+
+        public override double SalaryFactor
         {
             get
             {

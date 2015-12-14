@@ -9,6 +9,6 @@ namespace Interfaces
   public  interface IPaidPerson :IPerson
     {
         
-        decimal Salary { get; set; }
+     //   decimal Salary { get; set; }
     }
 }

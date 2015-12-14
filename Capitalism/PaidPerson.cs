@@ -14,7 +14,7 @@ namespace Interfaces
         private decimal salary;
 
 
-        protected PaidPerson(string firsdtname, string lastName, decimal salary)
+        protected PaidPerson(string firsdtname, string lastName)
         {
             this.FirstName = firsdtname;
             this.LastName = lastName;
@@ -53,9 +53,9 @@ namespace Interfaces
             get { return this.salary; }
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
-                    throw new ArgumentOutOfRangeException("salary", "Salary cannot be zero in negative value");
+                    throw new ArgumentOutOfRangeException("salary", "Salary cannot be  negative value");
                 }
                 this.salary = value;
             }
