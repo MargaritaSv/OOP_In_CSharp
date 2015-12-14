@@ -1,8 +1,8 @@
 ﻿namespace Interfaces
 {
-    public class RegularEmployee : Employee
+    public class Regular : Employee
     {
-        public RegularEmployee(string firsdtname, string lastName, decimal salary)
+        public Regular(string firsdtname, string lastName, decimal salary)
             : base(firsdtname, lastName, salary)
         {
         }

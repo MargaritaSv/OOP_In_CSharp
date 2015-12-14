@@ -8,7 +8,7 @@ namespace Interfaces
 {
     public interface IEmployee :IPaidPerson
     {
-        Deparment Department { get; } //IEmployee,dokato ne ne potrqbva da go slagame nqkude ne my dobavqme set
+        Deparment Department { get; set; } //IEmployee,dokato ne ne potrqbva da go slagame nqkude ne my dobavqme set
 
        // double SalaryFactory { get; }
     }

@@ -9,16 +9,15 @@ namespace Interfaces
 {
     public class Employee : PaidPerson, IEmployee
     {
-        public Deparment Department { get; }
 
-        public Employee(string firsdtname, string lastName, decimal salary,Deparment department)
-            :base(firsdtname,lastName,salary)
+        public Employee(string firsdtname, string lastName, decimal salary, Deparment department)
+            : base(firsdtname, lastName, salary)
         {
             this.Department = department;
         }
 
         public Employee(string firsdtname, string lastName, decimal salary)
-            : this(firsdtname,lastName,salary,null)
+            : this(firsdtname, lastName, salary, null)
         {
         }
 
@@ -30,5 +29,6 @@ namespace Interfaces
             }
         }
 
+        public Deparment Department { get; set; }
     }
 }

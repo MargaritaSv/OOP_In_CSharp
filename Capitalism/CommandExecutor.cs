@@ -3,6 +3,8 @@ using ConsoleApplication2.UserINterfaces;
 using Interfaces;
 using Interfaces.Interfaces;
 using System.Linq;
+using System;
+using System.Reflection;
 
 namespace ConsoleApplication2
 {
@@ -25,10 +27,11 @@ namespace ConsoleApplication2
                 case "create-company":
                     cmdResult = ExecuteCreateCompany(cmd);
                     break;
-
                 case "create-department":
+                    cmdResult = ExecuteCreateDepartmentCMD(cmd);
                     break;
                 case "create-employee":
+                    cmdResult = ExecuteCreateEmployeeCMD(cmd);
                     break;
                 case "create-salaries":
                     break;
@@ -44,6 +47,80 @@ namespace ConsoleApplication2
             }
             return cmdResult;
         }
+
+        private string ExecuteCreateEmployeeCMD(ICommand cmd)
+        {
+            string firstName = cmd.Parameters[0];
+            string lastName = cmd.Parameters[1];
+            string companyName = cmd.Parameters[2];
+
+            var company = this.database.Comapanies.FirstOrDefault(c => c.Name == companyName);
+
+            if (company == null)
+            {
+                return string.Format($"Company {companyName} does not exist");
+            }
+            if (company.Employee.Any(e => e.FirstName == firstName && e.LastName == lastName))
+            {
+                return string.Format($"Employee {firstName}{lastName} already exist in{company.Name} (no department)");
+            }
+            //       if (company.Department.SelectMany(e => e.Employee).Any(e => e.FirstName == firstName && e.LastName == lastName))
+            //"selectMany" -kolekciq ot employee-ta t.e. kato select ,no vmesto kolekcii ot kolekcii,6te vurne samo edin spisuk ot employee-ta
+            //any-vru6ta bylev resyzltat
+
+            var firstFindEmployee = company.Department.SelectMany(e => e.Employee).FirstOrDefault(e => e.FirstName == firstName && e.LastName == lastName);
+
+            if (firstFindEmployee != null)
+            {
+                return string.Format($"Employee {firstName}{lastName} already exist in {company.Name} (in department {firstFindEmployee.Department.Name})");
+            }
+            //reflection
+            var employeeTypeName = cmd.Parameters[2];
+            var employeeType = Assembly.GetExecutingAssembly().GetType(employeeTypeName);
+            var employee = Activator.CreateInstance(employeeType, args: new object[] { cmd.Parameters[0], cmd.Parameters[1], 0, null }) as IEmployee;  //instancirame go indirektno s klasa "Activator"
+                                                                                                                                                       //as IPaidPerson nai-ob6tiq za vsi4ki
+
+            //TODO replace salary to be valid
+
+            /*   bez reflection
+                        IPaidPerson person;
+                        switch (cmd.Parameters[2])
+                        {
+
+
+                            case "ChiefTelephoneOfficer":
+                                person = new ChiefTelephone("","",0m);
+                                break;
+                            case "Manager":
+                                person = new Manager("","",0m);
+                                break;
+                            case "CEO":
+                                throw new InvalidOperationException("Cannot creat a second CEO");
+                            default:
+                                break;
+                        }
+                        */
+
+            if (cmd.Parameters.Count == 4)
+            {
+                company.Employee.Add(employee);
+            }
+            else
+            {
+                var department = company.Department.FirstOrDefault(d => d.Name == cmd.Parameters[4]);
+
+                if (department == null)
+                {
+                    return string.Format($" Department {cmd.Parameters[4]} does not exist in company {company.Name}");
+
+
+                }
+                department.Employee.Add(employee);
+                employee.Department = department;
+            }
+            return null;
+        }
+
 
         private string ExecuteCreateCompany(ICommand cmd)
         {
@@ -168,8 +245,8 @@ namespace ConsoleApplication2
                 //lipsva edin if za proverka za ..... dulga i shiroka :D
 
                 var department = new Deparment(cmd.Parameters[1], manager as Manager); //kastvame kum podhpdq6tiq tip bez "as" gurmi; imame proverkite nagore predi da sme stignali  do tyk
-              //  mainDeparments.SubDeparments.Add(department);
-                 company.Department.Add(department);
+                                                                                       //  mainDeparments.SubDeparments.Add(department);
+                company.Department.Add(department);
             }
             return null;
         }

@@ -1,21 +1,15 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Interfaces
 {
-    public class Manager : PaidPerson, IBoss
+    public class Manager : Employee, IBoss
     {
-
-        public Manager(string firsdtname, string lastName, decimal salary)
-            : base(firsdtname, lastName, salary)
+        public Manager(string firsdtname, string lastName, decimal salary,Deparment department)
+            : base(firsdtname, lastName, salary,department)
         {
             this.SubEmployee = new List<IEmployee>();
         }
 
-
         public ICollection<IEmployee> SubEmployee { get; }
-
     }
 }

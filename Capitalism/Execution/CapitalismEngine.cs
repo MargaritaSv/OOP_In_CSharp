@@ -18,7 +18,7 @@ namespace Execution
         public CapitalismEngine()
         {
             this.UserInterface = new ConsoleUserInterfaces();
-            this.cmdExecutor = new CapitalismCMDEngine();
+            this.cmdExecutor = new CommandExecutor();
         }
 
         public void Run()

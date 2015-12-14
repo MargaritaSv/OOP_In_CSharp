@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Interfaces
 {
-    public class Company : ICompanyStructure
+    public class Company : ICompanyStructure 
     {
         private string name;
         private CEO ceo;
@@ -14,6 +14,7 @@ namespace Interfaces
             this.Name = name;
             this.CEO = ceo;
             this.Employee = new List<IEmployee>();
+            this.Department = new List<Deparment>();
         }
 
         public string Name
@@ -27,7 +28,6 @@ namespace Interfaces
                 }
             }
         }
-
 
         public CEO CEO
         {
@@ -45,6 +45,5 @@ namespace Interfaces
         public ICollection<Deparment> Department { get; set; }
 
         public ICollection<IEmployee> Employee { get; set; }
-
     }
 }
