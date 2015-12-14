@@ -37,7 +37,8 @@ namespace ConsoleApplication2
                 case "create-employee":
                     cmdResult = ExecuteCreateEmployeeCMD(cmd);
                     break;
-                case "create-salaries":
+                case "pay-salaries":
+                    cmdResult = ExecutePaySalariesCMD(cmd);
                     break;
 
                 case "show-employees":
@@ -50,6 +51,45 @@ namespace ConsoleApplication2
                     throw new System.InvalidOperationException("The command name is invalid.");
             }
             return cmdResult;
+        }
+
+        private string ExecutePaySalariesCMD(ICommand cmd) 
+        {
+            string companyName = cmd.Parameters[2];
+
+            var company = this.database.Comapanies.FirstOrDefault(c => c.Name == companyName);
+
+            if (company == null)
+            {
+                return string.Format($"Company {companyName} does not exist");
+            }
+
+            this.database.TotalSalaries[company.CEO] = company.CEO.Salary;
+
+            foreach (var em in company.Employee)
+            {
+                this.database.TotalSalaries[em] += em.Salary;
+            }
+
+            foreach (var dep in company.Department)
+            {
+                PaySalariesInDepartment(dep);
+            }
+
+            return null;
+        }
+
+        private void PaySalariesInDepartment(Deparment department)
+        {
+            foreach (var em in department.Employee)
+            {
+                this.database.TotalSalaries[em] += em.Salary;
+            }
+
+            foreach (var subDep in department.SubDeaprtments)
+            {
+                PaySalariesInDepartment(subDep);
+            }
         }
 
         private string ExecuteCreateEmployeeCMD(ICommand cmd)
@@ -120,7 +160,7 @@ namespace ConsoleApplication2
                 var department = company.Department.FirstOrDefault(d => d.Name == departmentName);
                 if (department == null)//ako nqame department se opitvame da go vzemem kato poddep. na nqkoi dryg
                 {
-                    department = company.Department.SelectMany(d => d.SubDepartment).FirstOrDefault(x => x.Name == departmentName);
+                    department = company.Department.SelectMany(d => d.SubDepartments).FirstOrDefault(x => x.Name == departmentName);
 
                 }
                 if (department == null)//ako produljava da hvurlq null -> excetion
@@ -135,7 +175,7 @@ namespace ConsoleApplication2
 
             decimal salary = salaryManager.GetSalary(employee, company);
             employee.Salary = salary;
-
+           
             return null;
         }
 
