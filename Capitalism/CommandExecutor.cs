@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using System.Reflection;
 using ConsoleApplication2.Salaries;
+using System.Text;
 
 namespace ConsoleApplication2
 {
@@ -55,7 +56,7 @@ namespace ConsoleApplication2
 
         private string ExecutePaySalariesCMD(ICommand cmd) 
         {
-            string companyName = cmd.Parameters[2];
+            string companyName = cmd.Parameters[0];
 
             var company = this.database.Comapanies.FirstOrDefault(c => c.Name == companyName);
 
@@ -63,33 +64,46 @@ namespace ConsoleApplication2
             {
                 return string.Format($"Company {companyName} does not exist");
             }
+            
+            var output = new StringBuilder();
 
             this.database.TotalSalaries[company.CEO] = company.CEO.Salary;
+
+            decimal totalMaoney = company.CEO.Salary;
+
 
             foreach (var em in company.Employee)
             {
                 this.database.TotalSalaries[em] += em.Salary;
+                totalMaoney += em.Salary;
             }
 
+            output.AppendFormat($"{company.Name} ####").AppendLine();
             foreach (var dep in company.Department)
             {
-                PaySalariesInDepartment(dep);
+               totalMaoney += PaySalariesInDepartment(dep,output);
             }
 
-            return null;
+            output.Replace("####", String.Format("{0:F2}",totalMaoney), 0, company.Name.Length+5);
+            return output.ToString();
         }
 
-        private void PaySalariesInDepartment(Deparment department)
+        private decimal PaySalariesInDepartment(Deparment department,StringBuilder output)
         {
+            decimal totalMoneyPerDepartmen = 0;
             foreach (var em in department.Employee)
             {
                 this.database.TotalSalaries[em] += em.Salary;
+                totalMoneyPerDepartmen += em.Salary;
             }
 
             foreach (var subDep in department.SubDeaprtments)
             {
-                PaySalariesInDepartment(subDep);
+               totalMoneyPerDepartmen +=  PaySalariesInDepartment(subDep,output);
             }
+
+            output.AppendFormat($"{department.Name} ({totalMoneyPerDepartmen})").AppendLine();
+            return totalMoneyPerDepartmen;
         }
 
         private string ExecuteCreateEmployeeCMD(ICommand cmd)
@@ -183,6 +197,7 @@ namespace ConsoleApplication2
         {
 
             var ceo = new CEO(cmd.Parameters[1], cmd.Parameters[2], decimal.Parse(cmd.Parameters[3]));
+            this.database.TotalSalaries[ceo] = 0m;
             var company = new Company(cmd.Parameters[0], ceo);
             string companyName = cmd.Parameters[0];
             this.database.Comapanies.Add(company);//zapisvame kompaniqta
