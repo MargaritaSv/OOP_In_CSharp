@@ -43,7 +43,7 @@ namespace Interfaces
         }
 
         public ICollection<Deparment> Department { get; set; }
-        //SubDepartment??
+
         public ICollection<IEmployee> Employee { get; set; }
     }
 }

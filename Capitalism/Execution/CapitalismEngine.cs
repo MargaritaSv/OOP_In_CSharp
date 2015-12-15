@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Execution
+﻿namespace Execution
 {
     using ConsoleApplication2;
     using ConsoleApplication2.Interfaces;
@@ -26,7 +20,6 @@ namespace Execution
             string cmdLine;
             while ((cmdLine = this.UserInterface.ReadLIne()) != "end")
             {
-                // string cmdLine = this.UserInterface.ReadLIne();
                 var cmd = new Command(cmdLine);
                 string cmdResult = this.cmdExecutor.ExecuteCMD(cmd);
                 if (cmdResult != null)

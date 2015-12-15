@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Interfaces
 {
-    using Interfaces;
     public class Deparment : ICompanyStructure
     {
         private string name;
@@ -46,5 +42,7 @@ namespace Interfaces
         }
 
         public ICollection<IEmployee> Employee { get; set; } //list ,za6toto ne znam kolko sa;kolekciq koqto ima indexator-IList s get i set
+
+        public ICollection<Deparment> SubDepartments { get; set; }
     }
 }

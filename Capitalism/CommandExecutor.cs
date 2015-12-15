@@ -145,7 +145,7 @@ namespace ConsoleApplication2
                 totalMoneyPerDepartmen += em.Salary;
             }
 
-            foreach (var subDep in department.SubDeaprtments)
+            foreach (var subDep in department.SubDepartments)
             {
                 totalMoneyPerDepartmen += PaySalariesInDepartment(subDep, output, departmentLevel + 1);
             }
@@ -225,14 +225,14 @@ namespace ConsoleApplication2
                     department = company.Department.SelectMany(d => d.SubDepartments).FirstOrDefault(x => x.Name == departmentName);
 
                 }
-                if (department == null)//ako produljava da hvurlq null -> excetion
+                if (department == null)
                 {
                     return string.Format($"Department {cmd.Parameters[4]} does not exist in company {company.Name}");
                 }
 
-                department.Employee.Add(employee);  //dobavqme
-                department.Manager.SubEmployee.Add(employee); //no v drygiq sly4ai nqma direktno manager
-                employee.Department = department;  //op set-me
+                department.Employee.Add(employee);  
+                department.Manager.SubEmployee.Add(employee); 
+                employee.Department = department; 
             }
 
             decimal salary = salaryManager.GetSalary(employee, company);
@@ -248,7 +248,7 @@ namespace ConsoleApplication2
             this.database.TotalSalaries[ceo] = 0m;
             var company = new Company(cmd.Parameters[0], ceo);
             string companyName = cmd.Parameters[0];
-            this.database.Comapanies.Add(company);//zapisvame kompaniqta
+            this.database.Comapanies.Add(company);
             if (database.Comapanies.Any(x => x.Name == company.Name))
             {
                 return string.Format("Comapany {0} is already exist.", company.Name);
@@ -259,13 +259,13 @@ namespace ConsoleApplication2
 
         private string ExecuteCreateDepartmentCMD(ICommand cmd)
         {
-            var company = this.database.Comapanies.FirstOrDefault(x => x.Name == cmd.Parameters[0]); //kompaniqta,4ieto ime e ravno na kompaniqta,koqto ve4e q ima
+            var company = this.database.Comapanies.FirstOrDefault(x => x.Name == cmd.Parameters[0]); 
 
-            if (company == null) //"FirstOrDefault" -> ako ima kompaniq ...ok... ako nqma default value my e null
+            if (company == null) 
             {
                 return string.Format("Comapany {0} does not exist", cmd.Parameters[0]);
             }
-            if (cmd.Parameters.Count == 4) //namq mainDepartmen po yslovie za output-a
+            if (cmd.Parameters.Count == 4) 
             {
                 var manager = company.Employee.FirstOrDefault(e => e.FirstName == cmd.Parameters[2] && e.LastName == cmd.Parameters[3]);
                 if (manager == null)
@@ -300,7 +300,7 @@ namespace ConsoleApplication2
                     string realPos = string.Empty;
                     for (int i = 0; i < pos.Length; i++)
                     {
-                        if (realPos[i].ToString().ToUpper() == realPos[i].ToString())//string-osvame ,za6toto vzimame char; ideqta e,4e ako sled kato e oburnata na glavna pak e razna s purvona4alnata => bila si e glavna
+                        if (realPos[i].ToString().ToUpper() == realPos[i].ToString())
                         {
                             realPos += " " + realPos[i];
                         }
@@ -311,7 +311,7 @@ namespace ConsoleApplication2
                         realPos = realPos.Trim();
                     }
 
-                    return string.Format($"{cmd.Parameters[2]} {cmd.Parameters[3]} is not a manager (real position is{realPos})"); //istinskata poziq e klasa,v koito e
+                    return string.Format($"{cmd.Parameters[2]} {cmd.Parameters[3]} is not a manager (real position is{realPos})");
                 }
 
                 if (company.Department.Any(d => d.Name == cmd.Parameters[1]))
